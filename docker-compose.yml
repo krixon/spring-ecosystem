@@ -1,0 +1,21 @@
+version: "3.1"
+
+services:
+
+  service-registry:
+    image: springarch/service-registry
+    environment:
+      SERVICE_HOST: service-registry
+      SERVICE_PORT: ${REGISTRY_PORT:-8761}
+    ports:
+      - ${REGISTRY_HOST_PORT:-8761}:${REGISTRY_PORT:-8761}
+
+  auth-service:
+    image: springarch/auth-service
+    environment:
+      SERVICE_PORT: ${AUTH_SERVICE_PORT:-8769}
+      REGISTRY_URL: ${REGISTRY_URL}
+    depends_on:
+      - service-registry
+    ports:
+      - ${AUTH_SERVICE_HOST_PORT:-8769}:${AUTH_SERVICE_PORT:-8769}

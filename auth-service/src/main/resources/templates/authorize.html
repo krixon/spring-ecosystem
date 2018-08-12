@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}">
+<head>
+    <title>Auth Service: Confirm</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2>Please Confirm</h2>
+
+    <div th:unless="${authorizationRequest == null}">
+        Client: <span th:text="${authorizationRequest.clientId}">Foo</span>
+        Redirect URI: <span th:text="${authorizationRequest.redirectUri}">http://example.com/login</span>
+        Scope: <span th:text="${authorizationRequest.scope}">read write</span>
+    </div>
+
+    <form id="confirmationForm" name="confirmationForm" action="../oauth/authorize" method="post">
+        <fieldset>
+            <label>
+                Allow
+                <input type="radio" name="user_oauth_approval" value="true">
+            </label>
+            <label>
+                Deny
+                <input type="radio" name="user_oauth_approval" value="false">
+            </label>
+            <input type="hidden" id="csrf_token" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        </fieldset>
+        <button class="btn btn-primary" type="submit">Approve</button>
+    </form>
+</div>
+</body>
+</html>
