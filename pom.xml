@@ -19,6 +19,7 @@
     </parent>
 
     <modules>
+        <module>admin</module>
         <module>auth-service</module>
         <module>service-registry</module>
     </modules>

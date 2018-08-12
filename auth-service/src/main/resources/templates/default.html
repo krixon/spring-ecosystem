@@ -26,10 +26,10 @@
 
     <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item" th:with="active = ${#request.requestURI} == '/auth/'" th:classappend="${active}? 'active'">
+            <li class="nav-item" th:with="active = ${#request.requestURI} == '/'" th:classappend="${active}? 'active'">
                 <a class="nav-link" href="home.html" th:href="@{/}">Home</a>
             </li>
-            <li class="nav-item" th:with="active = ${#strings.startsWith(#request.requestURI, '/auth/me')}" th:classappend="${active}? 'active'">
+            <li class="nav-item" th:with="active = ${#strings.startsWith(#request.requestURI, '/me')}" th:classappend="${active}? 'active'">
                 <a class="nav-link" href="me.html" th:href="@{/me}">Profile</a>
             </li>
         </ul>

@@ -3,12 +3,14 @@ package com.krixon.arch.authservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -57,6 +59,22 @@ public class AuthServiceApplication implements WebMvcConfigurer
     }
 
     @Configuration
+    @Order(100)
+    protected static class ActuatorConfiguration extends WebSecurityConfigurerAdapter
+    {
+        @Override
+        public void configure(HttpSecurity http) throws Exception
+        {
+            http
+                .requestMatcher(EndpointRequest.toAnyEndpoint())
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll();
+        }
+    }
+
+    @Configuration
+    @Order(101)
     protected static class LoginConfiguration extends WebSecurityConfigurerAdapter
     {
         @Bean

@@ -1,16 +1,11 @@
 ---
 spring:
   application:
-    name: auth-service
+    name: admin
 
 server:
-  port: 8769
+  port: 8762
   use-forward-headers: false
-  servlet:
-    session:
-      cookie:
-        # Use different cookie name to avoid collisions.
-        name: AUTH-SERVICE-SESSION
 
 eureka:
   instance:
@@ -45,3 +40,4 @@ eureka:
 
 logging:
   level.org.springframework.security: DEBUG
+
