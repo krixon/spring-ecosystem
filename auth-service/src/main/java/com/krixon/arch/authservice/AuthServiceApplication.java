@@ -68,8 +68,9 @@ public class AuthServiceApplication implements WebMvcConfigurer
             http
                 .requestMatcher(EndpointRequest.toAnyEndpoint())
                 .authorizeRequests()
-                .anyRequest()
-                .permitAll();
+                .anyRequest().permitAll()
+                .and()
+                .csrf().disable();
         }
     }
 
