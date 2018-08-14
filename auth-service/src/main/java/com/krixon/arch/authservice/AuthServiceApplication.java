@@ -17,22 +17,26 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.*;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.security.KeyPair;
+import java.security.Principal;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@RestController
 public class AuthServiceApplication implements WebMvcConfigurer
 {
+    private static final int SECURITY_CONFIG_DEFAULT_ORDER = 100;
+
     public static void main(String[] args)
     {
         SpringApplication.run(AuthServiceApplication.class, args);
@@ -54,12 +58,19 @@ public class AuthServiceApplication implements WebMvcConfigurer
     {
         registry.addViewController("/").setViewName("home");
         registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/me").setViewName("me");
         registry.addViewController("/oauth/confirm_access").setViewName("authorize");
     }
 
+    @GetMapping("/me")
+    @ResponseBody
+    public Principal get(Principal principal)
+    {
+        return principal;
+    }
+
+
     @Configuration
-    @Order(100)
+    @Order(SECURITY_CONFIG_DEFAULT_ORDER)
     protected static class ActuatorConfiguration extends WebSecurityConfigurerAdapter
     {
         @Override
@@ -74,8 +85,23 @@ public class AuthServiceApplication implements WebMvcConfigurer
         }
     }
 
+
     @Configuration
-    @Order(101)
+    @EnableResourceServer
+    @Order(SECURITY_CONFIG_DEFAULT_ORDER - 100)
+    protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
+    {
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            http
+                .antMatcher("/me")
+                .authorizeRequests().anyRequest().authenticated();
+        }
+    }
+
+
+    @Configuration
+    @Order(SECURITY_CONFIG_DEFAULT_ORDER + 100)
     protected static class LoginConfiguration extends WebSecurityConfigurerAdapter
     {
         @Bean
@@ -89,8 +115,12 @@ public class AuthServiceApplication implements WebMvcConfigurer
         public void configure(HttpSecurity http) throws Exception
         {
             http
-                .formLogin().loginPage("/login").permitAll().and()
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                .and()
                 .authorizeRequests()
+                .antMatchers("/", "/webjars/**", "/error**").permitAll()
                 .anyRequest().authenticated();
         }
 
@@ -128,13 +158,13 @@ public class AuthServiceApplication implements WebMvcConfigurer
         {
             clients.inMemory()
                 .withClient("acme")
-                .secret("acmesecret")
+                .secret("{noop}acmesecret")
                 .authorizedGrantTypes("authorization_code", "refresh_token", "password", "client_credentials")
                 .scopes("openid");
         }
 
         @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception
+        public void configure(AuthorizationServerEndpointsConfigurer endpoints)
         {
             endpoints
                 .authenticationManager(authenticationManager)
@@ -142,11 +172,12 @@ public class AuthServiceApplication implements WebMvcConfigurer
         }
 
         @Override
-        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer)
         {
             oauthServer
                 .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("isAuthenticated()")
+                .allowFormAuthenticationForClients();
         }
     }
 }
