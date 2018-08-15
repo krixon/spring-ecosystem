@@ -1,8 +1,4 @@
 ---
-spring:
-  application:
-    name: auth-service
-
 server:
   port: 8769
   use-forward-headers: false
@@ -11,14 +7,6 @@ server:
       cookie:
         # Use different cookie name to avoid collisions.
         name: AUTH-SERVICE-SESSION
-
-eureka:
-  instance:
-    hostname: localhost
-    non-secure-port: ${server.port}
-  client:
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
 
 management:
   endpoints:
@@ -42,6 +30,3 @@ eureka:
   client:
     service-url:
       defaultZone: ${REGISTRY_URL}
-
-logging:
-  level.org.springframework.security: DEBUG
