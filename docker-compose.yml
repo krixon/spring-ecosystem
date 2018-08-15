@@ -31,16 +31,17 @@ services:
       REGISTRY_URI: ${REGISTRY_URI}
     ports:
       - ${CONFIG_SERVICE_HOST_PORT:-8888}:${CONFIG_SERVICE_PORT:-8888}
-    depends_on:
-      - service-registry
 
   service-registry:
     image: spring-ecosystem/service-registry
     environment:
       SERVICE_HOST: service-registry
       SERVICE_PORT: ${REGISTRY_PORT:-8761}
+      CONFIG_SERVICE_URI: ${CONFIG_SERVICE_URI}
     ports:
       - ${REGISTRY_HOST_PORT:-8761}:${REGISTRY_PORT:-8761}
+    depends_on:
+      - config-service
 
   zipkin:
     image: openzipkin/zipkin
