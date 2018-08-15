@@ -3,7 +3,7 @@ version: "3.1"
 services:
 
   admin-ui:
-    image: spring-ecosystem/admin
+    image: spring-ecosystem/admin-ui
     environment:
       SERVICE_PORT: ${ADMIN_UI_PORT:-8762}
       REGISTRY_URI: ${REGISTRY_URI}

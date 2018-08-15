@@ -19,7 +19,7 @@
     </parent>
 
     <modules>
-        <module>admin</module>
+        <module>admin-ui</module>
         <module>auth-service</module>
         <module>config-service</module>
         <module>service-registry</module>
