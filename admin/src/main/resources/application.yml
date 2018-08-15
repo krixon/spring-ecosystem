@@ -19,13 +19,3 @@ spring:
 server:
   port: ${SERVICE_PORT}
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: ${REGISTRY_URL}
-
-logging:
-  level.org.springframework.security: DEBUG
-

@@ -1,5 +1,5 @@
 server:
-  port: 8889
+  port: 8761
 
 eureka:
   client:
@@ -13,12 +13,3 @@ spring:
 
 server:
   port: ${SERVICE_PORT}
-
-eureka:
-  instance:
-    hostname: ${SERVICE_HOST}
-  client:
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-  server:
-    enable-self-preservation: false

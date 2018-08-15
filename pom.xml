@@ -21,6 +21,7 @@
     <modules>
         <module>admin</module>
         <module>auth-service</module>
+        <module>config-service</module>
         <module>service-registry</module>
     </modules>
 
@@ -81,7 +82,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <imageName>springarch/${project.artifactId}</imageName>
+                    <imageName>spring-ecosystem/${project.artifactId}</imageName>
                     <imageTags>
                         <imageTag>${project.version}</imageTag>
                         <imageTag>latest</imageTag>
