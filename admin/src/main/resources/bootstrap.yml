@@ -1,3 +1,12 @@
 spring:
   application:
     name: admin
+
+---
+spring:
+  profiles: docker
+  # TODO: Use discovery to figure out where the config server is, or else add a retry mechanism.
+  # See: https://cloud.spring.io/spring-cloud-config/multi/multi__spring_cloud_config_client.html#discovery-first-bootstrap
+  cloud:
+    config:
+      uri: ${CONFIG_SERVICE_URI}

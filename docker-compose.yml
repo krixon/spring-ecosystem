@@ -2,23 +2,47 @@ version: "3.1"
 
 services:
 
+  admin-ui:
+    image: spring-ecosystem/admin
+    environment:
+      SERVICE_PORT: ${ADMIN_UI_PORT:-8762}
+      CONFIG_SERVICE_URI: ${CONFIG_SERVICE_URI}
+    ports:
+      - ${ADMIN_UI_HOST_PORT:-8762}:${ADMIN_UI_PORT:-8762}
+    depends_on:
+      - config-service
+      - service-registry
+
+  auth-service:
+    image: spring-ecosystem/auth-service
+    environment:
+      SERVICE_PORT: ${AUTH_SERVICE_PORT:-8769}
+      CONFIG_SERVICE_URI: ${CONFIG_SERVICE_URI}
+    depends_on:
+    - config-service
+    - service-registry
+    ports:
+    - ${AUTH_SERVICE_HOST_PORT:-8769}:${AUTH_SERVICE_PORT:-8769}
+
+  config-service:
+    image: spring-ecosystem/config-service
+    environment:
+      SERVICE_PORT: ${CONFIG_SERVICE_PORT:-8889}
+      REGISTRY_URL: ${REGISTRY_URL}
+    ports:
+      - ${CONFIG_SERVICE_HOST_PORT:-8889}:${CONFIG_SERVICE_PORT:-8889}
+
   service-registry:
-    image: springarch/service-registry
+    image: spring-ecosystem/service-registry
     environment:
       SERVICE_HOST: service-registry
       SERVICE_PORT: ${REGISTRY_PORT:-8761}
+      CONFIG_SERVICE_URI: ${CONFIG_SERVICE_URI}
     ports:
       - ${REGISTRY_HOST_PORT:-8761}:${REGISTRY_PORT:-8761}
-
-  auth-service:
-    image: springarch/auth-service
-    environment:
-      SERVICE_PORT: ${AUTH_SERVICE_PORT:-8769}
-      REGISTRY_URL: ${REGISTRY_URL}
     depends_on:
-      - service-registry
-    ports:
-      - ${AUTH_SERVICE_HOST_PORT:-8769}:${AUTH_SERVICE_PORT:-8769}
+      - zipkin
+      - config-service
 
   zipkin:
     image: openzipkin/zipkin
@@ -26,4 +50,4 @@ services:
       SERVICE_HOST: zipkin
       SERVICE_PORT: ${ZIPKIN_PORT:-9411}
     ports:
-    - ${ZIPKIN_HOST_PORT:-9411}:${ZIPKIN_PORT:-9411}
+      - ${ZIPKIN_HOST_PORT:-9411}:${ZIPKIN_PORT:-9411}

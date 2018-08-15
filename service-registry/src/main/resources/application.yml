@@ -14,11 +14,11 @@ spring:
 server:
   port: ${SERVICE_PORT}
 
-eureka:
-  instance:
-    hostname: ${SERVICE_HOST}
-  client:
-    service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-  server:
-    enable-self-preservation: false
+#eureka:
+#  instance:
+#    hostname: ${SERVICE_HOST}
+#  client:
+#    service-url:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+#  server:
+#    enable-self-preservation: false

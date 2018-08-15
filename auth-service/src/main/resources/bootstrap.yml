@@ -1,3 +1,10 @@
 spring:
   application:
     name: auth-service
+
+---
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: ${CONFIG_SERVICE_URI}

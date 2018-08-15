@@ -1,3 +1,4 @@
+---
 spring:
   cloud:
     config:
@@ -13,3 +14,18 @@ eureka:
 
 server:
   port: 8888
+
+---
+spring:
+  profiles: docker
+
+server:
+  port: ${SERVICE_PORT}
+
+# TODO: How can this be fetched from the config repo like it is for everything else?
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${REGISTRY_URL}
