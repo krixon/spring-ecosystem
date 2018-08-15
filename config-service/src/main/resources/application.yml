@@ -5,5 +5,11 @@ spring:
         git:
           uri: file://${user.home}/config-repo
 
+# TODO: How can this be fetched from the config repo like it is for everything else?
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8889/eureka
+
 server:
   port: 8888
