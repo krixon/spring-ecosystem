@@ -1,0 +1,26 @@
+server:
+  port: 8763
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+---
+spring:
+  profiles: docker
+
+server:
+  port: ${SERVICE_PORT}

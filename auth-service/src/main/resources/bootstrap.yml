@@ -8,7 +8,7 @@ spring:
         service-id: config-service
       fail-fast: true
       retry:
-        max-attempts: 50
+        max-attempts: 60
 
 eureka:
   client:
@@ -18,6 +18,10 @@ eureka:
 ---
 spring:
   profiles: docker
+  cloud:
+    config:
+      retry:
+        max-attempts: 3
 
 eureka:
   instance:

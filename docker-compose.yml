@@ -8,10 +8,23 @@ services:
       SERVICE_PORT: ${ADMIN_UI_PORT:-8762}
       REGISTRY_URI: ${REGISTRY_URI}
     ports:
-      - ${ADMIN_UI_HOST_PORT:-8762}:${ADMIN_UI_PORT:-8762}
+    - ${ADMIN_UI_HOST_PORT:-8762}:${ADMIN_UI_PORT:-8762}
     depends_on:
-      - config-service
-      - service-registry
+    - config-service
+    - service-registry
+    restart: on-failure
+
+  api-gateway:
+    image: spring-ecosystem/api-gateway
+    environment:
+      SERVICE_PORT: ${API_GATEWAY_PORT:-8763}
+      REGISTRY_URI: ${REGISTRY_URI}
+    ports:
+    - ${API_GATEWAY_HOST_PORT:-8763}:${API_GATEWAY_PORT:-8763}
+    depends_on:
+    - config-service
+    - service-registry
+    restart: on-failure
 
   auth-service:
     image: spring-ecosystem/auth-service
@@ -19,10 +32,11 @@ services:
       SERVICE_PORT: ${AUTH_SERVICE_PORT:-8769}
       REGISTRY_URI: ${REGISTRY_URI}
     depends_on:
-      - config-service
-      - service-registry
+    - config-service
+    - service-registry
+    restart: on-failure
     ports:
-      - ${AUTH_SERVICE_HOST_PORT:-8769}:${AUTH_SERVICE_PORT:-8769}
+    - ${AUTH_SERVICE_HOST_PORT:-8769}:${AUTH_SERVICE_PORT:-8769}
 
   config-service:
     image: spring-ecosystem/config-service
@@ -30,7 +44,7 @@ services:
       SERVICE_PORT: ${CONFIG_SERVICE_PORT:-8888}
       REGISTRY_URI: ${REGISTRY_URI}
     ports:
-      - ${CONFIG_SERVICE_HOST_PORT:-8888}:${CONFIG_SERVICE_PORT:-8888}
+    - ${CONFIG_SERVICE_HOST_PORT:-8888}:${CONFIG_SERVICE_PORT:-8888}
 
   service-registry:
     image: spring-ecosystem/service-registry
@@ -39,9 +53,9 @@ services:
       SERVICE_PORT: ${REGISTRY_PORT:-8761}
       CONFIG_SERVICE_URI: ${CONFIG_SERVICE_URI}
     ports:
-      - ${REGISTRY_HOST_PORT:-8761}:${REGISTRY_PORT:-8761}
+    - ${REGISTRY_HOST_PORT:-8761}:${REGISTRY_PORT:-8761}
     depends_on:
-      - config-service
+    - config-service
 
   zipkin:
     image: openzipkin/zipkin
@@ -49,4 +63,4 @@ services:
       SERVICE_HOST: zipkin
       SERVICE_PORT: ${ZIPKIN_PORT:-9411}
     ports:
-      - ${ZIPKIN_HOST_PORT:-9411}:${ZIPKIN_PORT:-9411}
+    - ${ZIPKIN_HOST_PORT:-9411}:${ZIPKIN_PORT:-9411}
