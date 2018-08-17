@@ -4,6 +4,9 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+  sleuth:
+    sampler:
+      probability: 1.0
 
 eureka:
   client:

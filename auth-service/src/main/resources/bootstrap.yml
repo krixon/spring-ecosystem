@@ -9,6 +9,9 @@ spring:
       fail-fast: true
       retry:
         max-attempts: 60
+  sleuth:
+    sampler:
+      probability: 1.0
 
 eureka:
   client:
