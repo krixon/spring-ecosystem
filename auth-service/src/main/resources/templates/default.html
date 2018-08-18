@@ -34,7 +34,7 @@
             </li>
         </ul>
         <div class="dropdown" sec:authorize="isAuthenticated()">
-            <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
                 <i class="fas fa-user"></i>
                 <span sec:authentication="name">Name</span>
             </button>
@@ -49,6 +49,20 @@
 
 <main class="container-fluid">
     <div class="row">
+        <aside class="col-md-3" layout:fragment="sidebar-left">
+            <div class="card text-white bg-dark text-center">
+                <div class="card-header">
+                    <i class="fas fa-user" th:classappend="${#authentication.isAuthenticated()} ? 'text-success' : 'text-default'"></i>
+                    <span sec:authentication="name">Dave Lister</span>
+                </div>
+                <div class="card-body">
+                    <span class="badge badge-success" sec:authorize="isAuthenticated()">Authenticated</span>
+                    <span class="badge badge-danger" sec:authorize="!isAuthenticated()">Anonymous</span>
+                    <span class="badge badge-default" sec:authorize="hasRole('ROLE_USER')">Regular User</span>
+                    <span class="badge badge-default" sec:authorize="hasRole('ROLE_ADMIN')">Administrator</span>
+                </div>
+            </div>
+        </aside>
         <div class="col" layout:fragment="content">
             Main page content goes here.
         </div>
