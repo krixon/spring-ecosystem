@@ -59,8 +59,5 @@ services:
 
   zipkin:
     image: openzipkin/zipkin
-    environment:
-      SERVICE_HOST: zipkin
-      SERVICE_PORT: ${ZIPKIN_PORT:-9411}
     ports:
     - ${ZIPKIN_HOST_PORT:-9411}:${ZIPKIN_PORT:-9411}
