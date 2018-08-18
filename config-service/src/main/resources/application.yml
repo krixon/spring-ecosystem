@@ -1,12 +1,12 @@
+server:
+  port: 0
+
 spring:
   cloud:
     config:
       server:
         git:
           uri: https://github.com/krixon/spring-ecosystem-config.git
-
-server:
-  port: 8888
 
 ---
 spring:
