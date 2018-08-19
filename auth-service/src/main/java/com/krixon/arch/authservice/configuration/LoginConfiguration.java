@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
-@Order(200)
+@Order(100)
 class LoginConfiguration extends WebSecurityConfigurerAdapter
 {
     @Bean
@@ -28,9 +28,9 @@ class LoginConfiguration extends WebSecurityConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception
     {
-        http
+        http.antMatcher("/**")
             .authorizeRequests()
-                .antMatchers("/", "/webjars/**", "/error**")
+            .antMatchers("/", "/css/**", "/webjars/**", "/error**")
                 .permitAll()
             .anyRequest()
                 .authenticated()

@@ -2,8 +2,7 @@
 <html lang="en"
       class="layout-default"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -15,6 +14,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
           crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/css/main.css" th:href="@{/css/main.css}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg mb-3 navbar-dark bg-dark">
@@ -27,47 +27,16 @@
     <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" th:with="active = ${#request.requestURI} == '/'" th:classappend="${active}? 'active'">
-                <a class="nav-link" href="home.html" th:href="@{/}">Home</a>
+                <a class="nav-link" href="../home.html" th:href="@{/}">Home</a>
             </li>
             <li class="nav-item" th:with="active = ${#strings.startsWith(#request.requestURI, '/me')}" th:classappend="${active}? 'active'">
-                <a class="nav-link" href="me.html" th:href="@{/me}">Profile</a>
+                <a class="nav-link" href="../me.html" th:href="@{/me}">Profile</a>
             </li>
         </ul>
-        <div class="dropdown" sec:authorize="isAuthenticated()">
-            <button class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-user"></i>
-                <span sec:authentication="name">Name</span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="me.html" th:href="@{/me}">Profile</a>
-                <a class="dropdown-item" href="#">Logout</a>
-            </div>
-        </div>
-
     </div>
 </nav>
 
-<main class="container-fluid">
-    <div class="row">
-        <aside class="col-md-3" layout:fragment="sidebar-left">
-            <div class="card text-white bg-dark text-center">
-                <div class="card-header">
-                    <i class="fas fa-user" th:classappend="${#authentication.isAuthenticated()} ? 'text-success' : 'text-default'"></i>
-                    <span sec:authentication="name">Dave Lister</span>
-                </div>
-                <div class="card-body">
-                    <span class="badge badge-success" sec:authorize="isAuthenticated()">Authenticated</span>
-                    <span class="badge badge-danger" sec:authorize="!isAuthenticated()">Anonymous</span>
-                    <span class="badge badge-default" sec:authorize="hasRole('ROLE_USER')">Regular User</span>
-                    <span class="badge badge-default" sec:authorize="hasRole('ROLE_ADMIN')">Administrator</span>
-                </div>
-            </div>
-        </aside>
-        <div class="col" layout:fragment="content">
-            Main page content goes here.
-        </div>
-    </div>
-</main>
+<main class="container-fluid" layout:fragment="main"></main>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

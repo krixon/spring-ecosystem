@@ -13,6 +13,7 @@ public class UserInfoController
     @ResponseBody
     public Principal get(Principal principal)
     {
+
         return principal;
     }
 }

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"
+      class="layout-default"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout/base}">
+<body>
+<main layout:fragment="main">
+    <div class="row">
+        <aside class="col-md-3" layout:fragment="sidebar">
+            <div class="card text-center">
+                <div class="card-header">
+                    <i class="fas fa-user" th:classappend="${#authorization.expr('isAnonymous()')} ? 'text-default' : 'text-success'"></i>
+                    <span sec:authorize="!isAnonymous()" sec:authentication="name">Dave Lister</span>
+                    <span sec:authorize="isAnonymous()">Anonymous</span>
+                </div>
+                <div class="card-body">
+                    <form action="/logout" method="post" th:action="@{/logout}" sec:authorize="!isAnonymous()">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign out
+                        </button>
+                    </form>
+                    <a class="btn btn-primary" href="/login" th:href="@{/login}" sec:authorize="isAnonymous()">
+                        <i class="fas fa-sign-in-alt"></i> Sign in
+                    </a>
+                </div>
+            </div>
+        </aside>
+        <div class="col" layout:fragment="content">
+            Main page content goes here.
+        </div>
+    </div>
+</main>
+</body>
+</html>
