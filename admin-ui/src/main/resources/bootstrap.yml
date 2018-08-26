@@ -9,9 +9,6 @@ spring:
       fail-fast: true
       retry:
         max-attempts: 60
-  sleuth:
-    sampler:
-      probability: 1.0
 
 # Note: Some of these settings improve registration speeds in dev but are not suitable for production where the
 # default values should be used. The settings in question are all of the ones specified in seconds.

@@ -1,0 +1,16 @@
+server:
+  port: 9411
+  use-forward-headers: false
+
+management:
+  metrics:
+    web:
+      server:
+        auto-time-requests: false
+---
+spring:
+  profiles: docker
+
+server:
+  port: ${SERVICE_PORT}
+

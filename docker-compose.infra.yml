@@ -3,6 +3,9 @@ version: "3.1"
 services:
 
   zipkin:
-    image: openzipkin/zipkin
+    image: spring-ecosystem/zipkin
+    environment:
+      SERVICE_PORT: ${ZIPKIN_PORT:-9411}
+      REGISTRY_URI: ${REGISTRY_URI}
     ports:
     - ${ZIPKIN_HOST_PORT:-9411}:${ZIPKIN_PORT:-9411}
