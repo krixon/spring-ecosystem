@@ -2,15 +2,6 @@ server:
   port: 8762
   use-forward-headers: false
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: ALWAYS
-
 ---
 spring:
   profiles: docker

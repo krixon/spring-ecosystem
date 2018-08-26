@@ -8,6 +8,16 @@ spring:
         git:
           uri: https://github.com/krixon/spring-ecosystem-config.git
 
+# TODO: How can this be pulled from the config service itself?
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
 ---
 spring:
   profiles: docker

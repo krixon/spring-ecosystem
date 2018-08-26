@@ -1,10 +1,27 @@
 server:
   port: 8761
 
+# TODO: Is there a way to avoid hard-coding config here given the config service depends on the service registry?
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
 eureka:
+  instance:
+    hostname: localhost
   client:
     fetch-registry: false
   server:
+    # Note: These settings improve registration speeds in dev but are not suitable for production where the
+    # default values should be used.
+    response-cache-update-interval-ms: 500
+    eviction-interval-timer-in-ms: 500
     wait-time-in-ms-when-sync-empty: 0
 
 ---

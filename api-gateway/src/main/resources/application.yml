@@ -1,15 +1,6 @@
 server:
   port: 8763
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: ALWAYS
-
 spring:
   cloud:
     gateway:

@@ -13,10 +13,18 @@ spring:
     sampler:
       probability: 1.0
 
+# Note: Some of these settings improve registration speeds in dev but are not suitable for production where the
+# default values should be used. The settings in question are all of the ones specified in seconds.
 eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+    initial-instance-info-replication-interval-seconds: 0
+    instance-info-replication-interval-seconds: 1
+    registry-fetch-interval-seconds: 1
 
 ---
 spring:
