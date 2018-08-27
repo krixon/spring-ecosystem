@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.authservice.configuration;
+package com.krixon.ecosystem.authservice.config;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;

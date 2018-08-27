@@ -1,5 +1,7 @@
 package com.krixon.ecosystem.authservice.domain;
 
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
@@ -14,7 +16,14 @@ public class StandardTokenEnhancer implements TokenEnhancer
     {
         Map<String, Object> additionalInfo = new HashMap<>();
 
-//        additionalInfo.put("key", "value");
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof User) {
+            additionalInfo.put("username", ((User) principal).getUsername());
+            additionalInfo.put("roles", ((User) principal).getAuthorities().stream().map(Object::toString));
+        }
+
+        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 
         return accessToken;
     }

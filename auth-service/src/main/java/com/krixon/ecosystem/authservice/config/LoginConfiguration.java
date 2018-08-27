@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.authservice.configuration;
+package com.krixon.ecosystem.authservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

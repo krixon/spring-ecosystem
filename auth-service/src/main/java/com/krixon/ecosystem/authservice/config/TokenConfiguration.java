@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.authservice.configuration;
+package com.krixon.ecosystem.authservice.config;
 
 import com.krixon.ecosystem.authservice.domain.StandardTokenEnhancer;
 import org.springframework.context.annotation.Bean;
