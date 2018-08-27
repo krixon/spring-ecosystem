@@ -53,7 +53,7 @@ class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdap
             .secret("{noop}acmesecret")
             .authorizedGrantTypes("authorization_code", "refresh_token", "password", "client_credentials")
             .redirectUris("http://localhost:8764/")
-            .scopes("openid");
+            .scopes("openid", "panel:read", "panel:write");
     }
 
     @Override

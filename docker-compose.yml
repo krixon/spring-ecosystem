@@ -46,6 +46,19 @@ services:
     ports:
     - ${CONFIG_SERVICE_HOST_PORT:-8888}:${CONFIG_SERVICE_PORT:-8888}
 
+  panel-service:
+    image: spring-ecosystem/panel-service
+    environment:
+      SERVICE_PORT: ${PANEL_SERVICE_PORT:-0}
+      REGISTRY_URI: ${REGISTRY_URI}
+      API_GATEWAY_PORT: ${API_GATEWAY_PORT:-8763}
+    depends_on:
+    - config-service
+    - service-registry
+    restart: on-failure
+    ports:
+    - ${PANEL_SERVICE_PORT_HOST_PORT:-8769}:${PANEL_SERVICE_PORT:-0}
+
   service-registry:
     image: spring-ecosystem/service-registry
     environment:

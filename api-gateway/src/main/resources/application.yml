@@ -28,6 +28,15 @@ spring:
 #          args:
 #            maxSize: 1000000 # 1MB
 
+      - id: panel-service
+        uri: lb://panel-service
+        predicates:
+        - Path=/panel-service/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/api
+        - SecureHeaders
+
 ---
 spring:
   profiles: docker
