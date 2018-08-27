@@ -12,7 +12,7 @@
 
     <parent>
         <groupId>com.krixon</groupId>
-        <artifactId>spring-ecosystem</artifactId>
+        <artifactId>ecosystem</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
