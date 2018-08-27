@@ -4,10 +4,29 @@ server:
 spring:
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+#      discovery:
+#        locator:
+#          enabled: true
+#          lower-case-service-id: true
+      default-filters:
+      - name: Retry
+        args:
+          retries: 3
+          statuses: BAD_GATEWAY
+
+      routes:
+      - id: auth-service
+        uri: lb://auth-service
+        predicates:
+        - Path=/auth-service/**
+        filters:
+        - StripPrefix=1
+        - SecureHeaders
+        # Reject requests bigger than 1MB.
+        # This filter is not available until v2.1.
+#        - name: RequestSize
+#          args:
+#            maxSize: 1000000 # 1MB
 
 ---
 spring:
