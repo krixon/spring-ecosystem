@@ -2,21 +2,9 @@ server:
   port: 0
   use-forward-headers: false
 
-security:
-  oauth2:
-    resource:
-      # FIXME: How can this URL be discovered from the service registry?
-      user-info-uri: http://localhost:8763/auth-service/userinfo
-
 ---
 spring:
   profiles: docker
 
 server:
   port: ${SERVICE_PORT}
-
-security:
-  oauth2:
-    resource:
-      # FIXME: How can this URL be discovered from the service registry?
-      user-info-uri: http://api-gateway:${API_GATEWAY_PORT}/auth-service/userinfo
