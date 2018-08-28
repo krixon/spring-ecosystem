@@ -37,6 +37,15 @@ spring:
         - PrefixPath=/api
         - SecureHeaders
 
+      - id: profiling-service
+        uri: lb://profiling-service
+        predicates:
+        - Path=/profiling-service/**
+        filters:
+        - StripPrefix=1
+        - PrefixPath=/api
+        - SecureHeaders
+
 ---
 spring:
   profiles: docker

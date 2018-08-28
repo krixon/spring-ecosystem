@@ -1,0 +1,10 @@
+server:
+  port: 0
+  use-forward-headers: false
+
+---
+spring:
+  profiles: docker
+
+server:
+  port: ${SERVICE_PORT}
