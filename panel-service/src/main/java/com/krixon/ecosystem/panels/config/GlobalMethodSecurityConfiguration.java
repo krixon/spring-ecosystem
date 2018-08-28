@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.panelservice.config;
+package com.krixon.ecosystem.panels.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;

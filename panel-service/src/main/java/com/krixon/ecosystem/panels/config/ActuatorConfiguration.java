@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.panelservice.config;
+package com.krixon.ecosystem.panels.config;
 
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Configuration;

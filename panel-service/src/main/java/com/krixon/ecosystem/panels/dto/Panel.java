@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.panelservice.dto;
+package com.krixon.ecosystem.panels.dto;
 
 public class Panel
 {

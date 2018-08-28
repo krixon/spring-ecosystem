@@ -1,7 +1,7 @@
-package com.krixon.ecosystem.panelservice.api;
+package com.krixon.ecosystem.panels.api;
 
 import brave.SpanCustomizer;
-import com.krixon.ecosystem.panelservice.dto.Panel;
+import com.krixon.ecosystem.panels.dto.Panel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

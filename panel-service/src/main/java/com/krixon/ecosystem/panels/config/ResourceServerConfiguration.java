@@ -1,6 +1,6 @@
-package com.krixon.ecosystem.panelservice.config;
+package com.krixon.ecosystem.panels.config;
 
-import com.krixon.ecosystem.panelservice.AccessTokenConverter;
+import com.krixon.ecosystem.panels.AccessTokenConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;

@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.panelservice;
+package com.krixon.ecosystem.panels;
 
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
