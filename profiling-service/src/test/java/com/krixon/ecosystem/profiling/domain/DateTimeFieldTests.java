@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.profiling.dto;
+package com.krixon.ecosystem.profiling.domain;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,13 +17,14 @@ public class DateTimeFieldTests
     public void whenSerializingPolymorphic_thenCorrect()
     throws JsonProcessingException
     {
-        DateTimeField field = new DateTimeField("fieldId", "fieldName");
+        DateTimeField field = new DateTimeField("fieldId", "panelId", "fieldName");
 
         String result = new ObjectMapper().writeValueAsString(field);
 
         assertThat(result, containsString("type"));
         assertThat(result, containsString("datetime"));
         assertThat(result, containsString("fieldId"));
+        assertThat(result, containsString("panelId"));
         assertThat(result, containsString("fieldName"));
     }
 

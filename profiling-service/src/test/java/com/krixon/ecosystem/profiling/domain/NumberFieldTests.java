@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.profiling.dto;
+package com.krixon.ecosystem.profiling.domain;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,13 +17,14 @@ public class NumberFieldTests
     public void whenSerializingPolymorphic_thenCorrect()
     throws JsonProcessingException
     {
-        NumberField field = new NumberField("fieldId", "fieldName");
+        NumberField field = new NumberField("fieldId", "panelId", "fieldName");
 
         String result = new ObjectMapper().writeValueAsString(field);
 
         assertThat(result, containsString("type"));
         assertThat(result, containsString("number"));
         assertThat(result, containsString("fieldId"));
+        assertThat(result, containsString("panelId"));
         assertThat(result, containsString("fieldName"));
     }
 

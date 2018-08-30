@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.profiling.dto;
+package com.krixon.ecosystem.profiling.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import javax.persistence.Entity;
+
+@Entity
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @JsonTypeName("number")
@@ -14,19 +17,22 @@ public class NumberField extends Field
     Double min;
     Double max;
 
-    public NumberField(String id, String name)
+    NumberField() {}
+
+    public NumberField(String id, String panelId, String name)
     {
-        super(id, name);
+        super(id, panelId, name);
     }
 
     @JsonCreator
     public NumberField(
         @JsonProperty("id") String id,
+        @JsonProperty("panelId") String panelId,
         @JsonProperty("name") String name,
         @JsonProperty("min") Double min,
         @JsonProperty("max") Double max)
     {
-        super(id, name);
+        super(id, panelId, name);
 
         this.min = min;
         this.max = max;
