@@ -1,4 +1,4 @@
-package com.krixon.ecosystem.panels;
+package com.krixon.ecosystem.profiling;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

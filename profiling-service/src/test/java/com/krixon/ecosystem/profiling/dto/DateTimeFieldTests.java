@@ -1,9 +1,7 @@
-package com.krixon.ecosystem.panels.dto;
+package com.krixon.ecosystem.profiling.dto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.krixon.ecosystem.profiling.dto.Field;
-import com.krixon.ecosystem.profiling.dto.NumberField;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,18 +11,18 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
-public class NumberFieldTests
+public class DateTimeFieldTests
 {
     @Test
     public void whenSerializingPolymorphic_thenCorrect()
     throws JsonProcessingException
     {
-        NumberField field = new NumberField("fieldId", "fieldName");
+        DateTimeField field = new DateTimeField("fieldId", "fieldName");
 
         String result = new ObjectMapper().writeValueAsString(field);
 
         assertThat(result, containsString("type"));
-        assertThat(result, containsString("number"));
+        assertThat(result, containsString("datetime"));
         assertThat(result, containsString("fieldId"));
         assertThat(result, containsString("fieldName"));
     }
@@ -33,14 +31,14 @@ public class NumberFieldTests
     public void whenDeserializingPolymorphic_thenCorrect()
     throws IOException
     {
-        String json = "{\"id\":\"fieldId\",\"name\":\"fieldName\",\"type\":\"number\"}";
+        String json = "{\"id\":\"fieldId\",\"name\":\"fieldName\",\"type\":\"datetime\"}";
 
-        NumberField field = new ObjectMapper()
+        DateTimeField field = new ObjectMapper()
             .readerFor(Field.class)
             .readValue(json);
 
         Assert.assertEquals("fieldName", field.getName());
         Assert.assertEquals("fieldId", field.getId());
-        Assert.assertEquals(NumberField.class, field.getClass());
+        Assert.assertEquals(DateTimeField.class, field.getClass());
     }
 }

@@ -2,16 +2,13 @@ package com.krixon.ecosystem.profiling.dto;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.Value;
-import lombok.experimental.NonFinal;
 
-//@Value
-//@NonFinal
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     property = "type"
 )
 @JsonSubTypes({
+    @JsonSubTypes.Type(value = DateTimeField.class, name = "datetime"),
     @JsonSubTypes.Type(value = NumberField.class, name = "number"),
 })
 abstract public class Field
@@ -35,3 +32,4 @@ abstract public class Field
         return name;
     }
 }
+
