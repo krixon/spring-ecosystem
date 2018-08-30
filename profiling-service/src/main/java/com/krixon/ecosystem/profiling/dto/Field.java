@@ -1,12 +1,10 @@
 package com.krixon.ecosystem.profiling.dto;
 
+import lombok.Value;
+
+@Value
 public class Field
 {
-    public final String id;
-    public final String name;
-
-    public Field(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    String id;
+    String name;
 }

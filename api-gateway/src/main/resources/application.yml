@@ -43,8 +43,10 @@ spring:
         - Path=/profiling-service/**
         filters:
         - StripPrefix=1
-        - PrefixPath=/api
         - SecureHeaders
+        # Allow HATEOAS links be generated correctly at the backend service.
+        # TODO: Remove this once 2.0.2 is released as SCG handles this header by default.
+        - AddRequestHeader=X-Forwarded-Prefix, /profiling-service
 
 ---
 spring:
