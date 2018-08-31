@@ -21,7 +21,7 @@ public class NumberField extends Field
 
     public NumberField(String id, String panelId, String name)
     {
-        super(id, panelId, name);
+        this(id, panelId, name, null, null);
     }
 
     @JsonCreator
