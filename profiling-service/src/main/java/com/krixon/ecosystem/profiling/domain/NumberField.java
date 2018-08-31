@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.Value;
 
 import javax.persistence.Entity;
 
@@ -14,8 +15,8 @@ import javax.persistence.Entity;
 @JsonTypeName("number")
 public class NumberField extends Field
 {
-    Double min;
-    Double max;
+    private Double min;
+    private Double max;
 
     NumberField() {}
 
@@ -36,6 +37,14 @@ public class NumberField extends Field
 
         this.min = min;
         this.max = max;
+
+        // Note that it's OK to register this event here even though this constructor is used for all deserialization.
+        // This is because when using PUT or PATCH to update, values are mapped from the existing deserialized
+        // instance (containing this registered event) to a new instance created without calling this constructor.
+        // The end result is that the instance which is ultimately saved does not contain the event and so nothing
+        // is fired. Even so, it might be that this is all too magic and plain Spring Data should be used with some
+        // more manual boilerplate to give better control...
+        registerEvent(new Defined(id, panelId, name, min, max));
     }
 
     public Double getMin()
@@ -46,6 +55,13 @@ public class NumberField extends Field
     public Double getMax()
     {
         return max;
+    }
+
+    @Value
+    public static class Defined
+    {
+        private String id, panelId, name;
+        private Double min, max;
     }
 }
 

@@ -2,6 +2,7 @@ package com.krixon.ecosystem.profiling.domain;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ import javax.validation.constraints.NotNull;
     @JsonSubTypes.Type(value = NumberField.class, name = "number"),
 })
 @RestResource(path = "fields", rel = "fields")
-public abstract class Field
+public abstract class Field extends AbstractAggregateRoot
 {
     @Id
     private String id;
