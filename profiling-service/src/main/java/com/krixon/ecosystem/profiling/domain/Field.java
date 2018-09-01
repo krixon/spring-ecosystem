@@ -1,9 +1,6 @@
 package com.krixon.ecosystem.profiling.domain;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.data.domain.AbstractAggregateRoot;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,12 +9,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Inheritance
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = DateTimeField.class, name = "datetime"),
-    @JsonSubTypes.Type(value = NumberField.class, name = "number"),
-})
-@RestResource(path = "fields", rel = "fields")
 public abstract class Field extends AbstractAggregateRoot
 {
     @Id

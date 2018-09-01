@@ -17,7 +17,7 @@ public class NumberFieldTests
     public void whenSerializingPolymorphic_thenCorrect()
     throws JsonProcessingException
     {
-        NumberField field = new NumberField("fieldId", "panelId", "fieldName");
+        NumberField field = new NumberField("fieldId", "panelId", "fieldName", null, null);
 
         String result = new ObjectMapper().writeValueAsString(field);
 
