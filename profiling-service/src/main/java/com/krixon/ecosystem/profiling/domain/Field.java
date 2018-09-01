@@ -1,15 +1,16 @@
 package com.krixon.ecosystem.profiling.domain;
 
+import lombok.Getter;
+import lombok.Value;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Inheritance
-public abstract class Field extends AbstractAggregateRoot
+@Getter
+class Field extends AbstractAggregateRoot
 {
     @Id
     private String id;
@@ -20,27 +21,23 @@ public abstract class Field extends AbstractAggregateRoot
     @NotNull
     private String name;
 
-    protected Field() {}
+    private Field() {}
 
-    public Field(String id, String panelId, String name)
+    Field(String id, String panelId, String name)
     {
         this.id = id;
         this.panelId = panelId;
         this.name = name;
     }
 
-    public String getId()
+    void markDefined()
     {
-        return id;
+        registerEvent(new Defined(id, panelId, name));
     }
 
-    public String getPanelId()
+    @Value
+    private static class Defined
     {
-        return panelId;
-    }
-
-    public String getName()
-    {
-        return name;
+        private String id, panelId, name;
     }
 }

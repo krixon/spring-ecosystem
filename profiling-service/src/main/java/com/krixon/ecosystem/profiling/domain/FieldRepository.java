@@ -1,11 +1,20 @@
 package com.krixon.ecosystem.profiling.domain;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.*;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+@RepositoryRestResource(path = "fields", collectionResourceRel = "fields", itemResourceRel = "field")
 public interface FieldRepository extends PagingAndSortingRepository<Field, String>
 {
-    List<Field> findByName(@Param("name") String name);
+    @Component
+    @RepositoryEventHandler
+    class FieldEventHandler
+    {
+        @HandleBeforeCreate
+        public void handleBeforeCreate(Field field)
+        {
+            field.markDefined();
+        }
+    }
 }

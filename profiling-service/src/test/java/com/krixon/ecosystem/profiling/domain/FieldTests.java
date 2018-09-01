@@ -11,18 +11,16 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
-public class NumberFieldTests
+public class FieldTests
 {
     @Test
     public void whenSerializingPolymorphic_thenCorrect()
     throws JsonProcessingException
     {
-        NumberField field = new NumberField("fieldId", "panelId", "fieldName", null, null);
+        Field field = new Field("fieldId", "panelId", "fieldName");
 
         String result = new ObjectMapper().writeValueAsString(field);
 
-        assertThat(result, containsString("type"));
-        assertThat(result, containsString("number"));
         assertThat(result, containsString("fieldId"));
         assertThat(result, containsString("panelId"));
         assertThat(result, containsString("fieldName"));
@@ -32,14 +30,15 @@ public class NumberFieldTests
     public void whenDeserializingPolymorphic_thenCorrect()
     throws IOException
     {
-        String json = "{\"id\":\"fieldId\",\"name\":\"fieldName\",\"type\":\"number\"}";
+        String json = "{\"id\":\"fieldId\",\"name\":\"fieldName\"}";
 
-        NumberField field = new ObjectMapper()
+        Field field = new ObjectMapper()
             .readerFor(Field.class)
             .readValue(json);
 
-        Assert.assertEquals("fieldName", field.getName());
         Assert.assertEquals("fieldId", field.getId());
-        Assert.assertEquals(NumberField.class, field.getClass());
+        Assert.assertEquals("panelId", field.getPanelId());
+        Assert.assertEquals("fieldName", field.getName());
+        Assert.assertEquals(Field.class, field.getClass());
     }
 }
