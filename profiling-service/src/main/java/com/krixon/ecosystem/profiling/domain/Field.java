@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
-class Field extends AbstractAggregateRoot
+public class Field extends AbstractAggregateRoot
 {
     @Id
     private String id;
@@ -23,7 +23,7 @@ class Field extends AbstractAggregateRoot
 
     private Field() {}
 
-    Field(String id, String panelId, String name)
+    public Field(String id, String panelId, String name)
     {
         this.id = id;
         this.panelId = panelId;

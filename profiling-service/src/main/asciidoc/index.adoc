@@ -1,0 +1,155 @@
+= {app-title} API Guide
+Karl Rixon <@krixon>
+v0.1.0: First draft
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:operation-curl-request-title: Example request
+:operation-http-response-title: Example response
+:app-title: Profiling Service
+ifndef::snippets[]
+:snippets: ../../../target/generated-snippets
+endif::[]
+
+{app-title} provides the ability to collect arbitrary demographic profiling data and search for sample
+based on a set of criteria.
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP Verbs
+
+{app-title} tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP verbs.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource.
+
+| `POST`
+| Used to create a new resource.
+
+| `PATCH`
+| Used to update an existing resource, including partial updates.
+
+| `DELETE`
+| Used to delete an existing resource.
+|===
+
+[[overview-http-status-codes]]
+== HTTP Status Codes
+
+{app-title} tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully.
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header.
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully.
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information.
+
+| `404 Not Found`
+| The requested resource did not exist.
+|===
+
+[[overview-errors]]
+== Errors
+
+Whenever an error response (status code >= 400) is returned, the body will contain a JSON object
+that describes the problem. The error object has the following structure:
+
+include::{snippets}/error-example/response-fields.adoc[]
+
+For example, a request that attempts to apply a non-existent constraint to a field will produce a
+`400 Bad Request` response:
+
+include::{snippets}/error-example/http-response.adoc[]
+
+[[overview-hypermedia]]
+== Hypermedia
+
+{app-title} uses hypermedia and resources include links to other resources in their
+responses. Responses are in http://stateless.co/hal_specification.html[Hypertext Application
+from resource to resource.
+Language (HAL)] format. Links can be found beneath the `_links` key. Users of the API should
+not create URIs themselves, instead they should use the above-described links to navigate.
+
+[[overview-pagination]]
+== Pagination
+
+Many collection resources support pagination. If this is the case, a `page` key will be included.
+
+This contains the following:
+
+|===
+| Path | Type | Description
+
+| `+size+`
+| `+Number+`
+| The number of resources included in each page.
+
+| `+totalElements+`
+| `+Number+`
+| The total number of resources in the collection.
+
+| `+totalPages+`
+| `+Number+`
+| The total number of pages.
+
+| `+number+`
+| `+Number+`
+| The current page number.
+
+|===
+
+
+[[resources]]
+= Resources
+
+
+
+[[resources-index]]
+== Index
+
+The index provides the entry point into the service.
+
+
+
+[[resources-index-access]]
+=== Accessing the Index
+
+A `GET` request is used to access the index
+
+operation::index-example[snippets='response-fields,http-response,links']
+
+
+
+[[resources-fields]]
+== Fields
+
+The Fields resources is used to create and list fields.
+
+
+
+[[resources-fields-list]]
+=== Listing Fields
+
+A `GET` request will list all of the service's fields.
+
+operation::fields-list-example[snippets='response-fields,curl-request,http-response,links']
