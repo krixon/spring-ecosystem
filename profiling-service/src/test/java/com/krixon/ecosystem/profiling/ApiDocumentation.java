@@ -1,5 +1,6 @@
 package com.krixon.ecosystem.profiling;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krixon.ecosystem.profiling.domain.Field;
 import com.krixon.ecosystem.profiling.domain.FieldRepository;
 import org.junit.Before;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,6 +19,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.RequestDispatcher;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
@@ -24,9 +31,9 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,6 +48,9 @@ public class ApiDocumentation
     
     @Autowired
     private FieldRepository fieldRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
     
     @Autowired
     private WebApplicationContext context;
@@ -52,7 +62,10 @@ public class ApiDocumentation
     {
         mockMvc = MockMvcBuilders
             .webAppContextSetup(context)
-            .apply(documentationConfiguration(restDocumentation))
+            .apply(documentationConfiguration(restDocumentation)
+                .operationPreprocessors()
+                    .withRequestDefaults(prettyPrint())
+                    .withResponseDefaults(prettyPrint()))
             .build();
     }
 
@@ -93,12 +106,12 @@ public class ApiDocumentation
 
     @Test
     public void fieldListExample() throws Exception {
-        this.fieldRepository.deleteAll();
+        fieldRepository.deleteAll();
 
         createField("age","demo", "Age");
         createField("name","demo", "Name");
 
-        this.mockMvc.perform(get("/fields"))
+        mockMvc.perform(get("/fields"))
             .andExpect(status().isOk())
             .andDo(document("fields-list-example",
                 links(
@@ -108,6 +121,26 @@ public class ApiDocumentation
                     subsectionWithPath("_embedded.fields").description("A collection of <<resources-field, Field resources>>."),
                     subsectionWithPath("page").description("<<overview-pagination,Pagination information>>."),
                     subsectionWithPath("_links").description("<<resources-tags-list-links, Links>> to other resources."))));
+    }
+
+    @Test
+    public void fieldsCreateExample() throws Exception
+    {
+        Map<String, String> field = new HashMap<>();
+        field.put("id", "ebcc68c0-7c0e-45fc-a0cd-b7c631f45dd4");
+        field.put("panelId", "ff1cc98a-1e03-48b3-8f21-f89be1918f16");
+        field.put("name", "Date of Birth");
+
+        mockMvc.perform(
+            post("/fields")
+                .contentType(MediaTypes.HAL_JSON)
+                .content(objectMapper.writeValueAsString(field)))
+            .andExpect(status().isCreated())
+            .andDo(document("fields-create-example",
+                requestFields(
+                    fieldWithPath("id").description("The unique identifier of the field."),
+                    fieldWithPath("panelId").description("The unique identifier of the panel which owns the field."),
+                    fieldWithPath("name").description("A human-friendly name for the field."))));
     }
 
     private void createField(String id, String panelId, String name) {

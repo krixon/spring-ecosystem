@@ -121,14 +121,25 @@
 
     <repositories>
         <repository>
-            <id>spring-release</id>
-            <name>Spring Release</name>
+            <id>spring-libs-release</id>
+            <name>Spring Release Libs</name>
             <url>https://repo.spring.io/libs-release</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-release</id>
+            <name>Spring Release</name>
+            <url>https://repo.spring.io/release</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
 
 </project>

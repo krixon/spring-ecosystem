@@ -136,7 +136,25 @@ The index provides the entry point into the service.
 
 A `GET` request is used to access the index
 
-operation::index-example[snippets='response-fields,http-response,links']
+==== Example Request
+[role="primary"]
+.HTTP
+include::{snippets}/index-example/http-request.adoc[]
+[role="secondary"]
+.CURL
+include::{snippets}/index-example/curl-request.adoc[]
+[role="secondary"]
+.HTTPie
+include::{snippets}/index-example/httpie-request.adoc[]
+
+==== Response Fields
+include::{snippets}/index-example/response-fields.adoc[]
+
+==== Example Response
+include::{snippets}/index-example/http-response.adoc[]
+
+==== Links
+include::{snippets}/index-example/links.adoc[]
 
 
 
@@ -153,3 +171,25 @@ The Fields resources is used to create and list fields.
 A `GET` request will list all of the service's fields.
 
 operation::fields-list-example[snippets='response-fields,curl-request,http-response,links']
+
+
+
+[[resources-fields-create]]
+=== Creating a Field
+
+A `POST` request is used to create a field.
+
+==== Example Request
+[role="primary"]
+.HTTP
+include::{snippets}/fields-create-example/http-request.adoc[]
+[role="secondary"]
+.CURL
+include::{snippets}/fields-create-example/curl-request.adoc[]
+[role="secondary"]
+.HTTPie
+include::{snippets}/fields-create-example/httpie-request.adoc[]
+
+==== Example Response
+include::{snippets}/fields-create-example/http-response.adoc[]
+

@@ -126,6 +126,11 @@
                         <artifactId>spring-restdocs-asciidoctor</artifactId>
                         <version>${spring-restdocs.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>io.spring.asciidoctor</groupId>
+                        <artifactId>spring-asciidoctor-extensions</artifactId>
+                        <version>0.1.3.RELEASE</version>
+                    </dependency>
                 </dependencies>
             </plugin>
 
