@@ -147,7 +147,7 @@ include::{snippets}/index-example/curl-request.adoc[]
 .HTTPie
 include::{snippets}/index-example/httpie-request.adoc[]
 
-==== Response Fields
+==== Response Structure
 include::{snippets}/index-example/response-fields.adoc[]
 
 ==== Example Response
@@ -193,3 +193,66 @@ include::{snippets}/fields-create-example/httpie-request.adoc[]
 ==== Example Response
 include::{snippets}/fields-create-example/http-response.adoc[]
 
+
+
+[[resources-field]]
+== Field
+
+The Field resource is used to retrieve, update and delete individual fields.
+
+
+[[resources-field-links]]
+=== Links
+include::{snippets}/field-get-example/links.adoc[]
+
+[[resources-field-retrieve]]
+=== Retrieve a Field
+
+A `GET` request will retrieve the details of a field.
+
+==== Example Request
+[role="primary"]
+.HTTP
+include::{snippets}/field-get-example/http-request.adoc[]
+[role="secondary"]
+.CURL
+include::{snippets}/field-get-example/curl-request.adoc[]
+[role="secondary"]
+.HTTPie
+include::{snippets}/field-get-example/httpie-request.adoc[]
+
+==== Response Structure
+include::{snippets}/field-get-example/response-fields.adoc[]
+
+==== Example Response
+include::{snippets}/field-get-example/http-response.adoc[]
+
+
+[[resources-field-update]]
+=== Update a field
+
+A `PATCH` request is used to update a field.
+
+==== Request Structure
+
+include::{snippets}/field-update-example/request-fields.adoc[]
+
+// This only applies if/when there is more than one editable field:
+//To leave an attribute of a field unchanged, any of the above may be omitted from the request.
+
+[NOTE]
+It is not possible to update the `id` or `panelId` properties of a field.
+
+==== Example Request
+[role="primary"]
+.HTTP
+include::{snippets}/field-update-example/http-request.adoc[]
+[role="secondary"]
+.CURL
+include::{snippets}/field-update-example/curl-request.adoc[]
+[role="secondary"]
+.HTTPie
+include::{snippets}/field-update-example/httpie-request.adoc[]
+
+==== Example Response
+include::{snippets}/field-update-example/http-response.adoc[]
