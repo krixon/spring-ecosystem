@@ -3,6 +3,7 @@ package com.krixon.ecosystem.profiling;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krixon.ecosystem.profiling.domain.Field;
 import com.krixon.ecosystem.profiling.domain.FieldRepository;
+import lombok.NonNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,9 +34,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,6 +70,8 @@ public class ApiDocumentation
                     .withRequestDefaults(prettyPrint())
                     .withResponseDefaults(prettyPrint()))
             .build();
+
+        fieldRepository.deleteAll();
     }
 
     @Test
@@ -94,31 +97,30 @@ public class ApiDocumentation
     }
 
     @Test
-    public void indexExample() throws Exception {
+    public void indexExample() throws Exception
+    {
         this.mockMvc.perform(get("/"))
             .andExpect(status().isOk())
             .andDo(document("index-example",
                 links(
                     linkWithRel("fields").description("The <<resources-fields,Fields resource>>."),
-                    linkWithRel("profile").description("The ALPS profile for the service.")),
+                    linkWithRel("answers").description("The <<resources-answers,Answers resource>> for the specified panel member.")),
                 responseFields(
                     subsectionWithPath("_links").description("<<resources-index-links,Links>> to other resources"))));
 
     }
 
     @Test
-    public void fieldListExample() throws Exception {
-        fieldRepository.deleteAll();
-
-        createField("age","demo", "Age");
-        createField("name","demo", "Name");
+    public void fieldListExample() throws Exception
+    {
+        createField("age", "Age");
+        createField("name", "Name");
 
         mockMvc.perform(get("/fields"))
             .andExpect(status().isOk())
             .andDo(document("fields-list-example",
                 links(
-                    linkWithRel("self").description("Canonical link for this resource."),
-                    linkWithRel("profile").description("The ALPS profile for this resource.")),
+                    linkWithRel("self").description("Canonical link for this resource.")),
                 responseFields(
                     subsectionWithPath("_embedded.fields").description("A collection of <<resources-field, Field resources>>."),
                     subsectionWithPath("page").description("<<overview-pagination,Pagination information>>."),
@@ -129,16 +131,14 @@ public class ApiDocumentation
     public void fieldCreateExample() throws Exception
     {
         Map<String, String> field = createFieldData(
-            "ebcc68c0-7c0e-45fc-a0cd-b7c631f45dd4",
-            "ff1cc98a-1e03-48b3-8f21-f89be1918f16",
+            "example-panel",
             "Date of Birth"
         );
 
-        String fieldLocation = postField(field)
-            .andDo(document("fields-create-example",
+        String fieldLocation = putField("example", field)
+            .andDo(document("field-create-example",
                 requestFields(
-                    idField(),
-                    panelIdField(),
+                    panelField().optional(),
                     nameField())))
             .andReturn()
                 .getResponse()
@@ -151,12 +151,11 @@ public class ApiDocumentation
     public void fieldGetExample() throws Exception
     {
         Map<String, String> field = createFieldData(
-            "ebcc68c0-7c0e-45fc-a0cd-b7c631f45dd4",
-            "ff1cc98a-1e03-48b3-8f21-f89be1918f16",
+            "example-panel",
             "Date of Birth"
         );
 
-        String fieldLocation = postField(field)
+        String fieldLocation = putField("example", field)
             .andReturn()
                 .getResponse()
                 .getHeader("Location");
@@ -165,25 +164,22 @@ public class ApiDocumentation
             .andDo(print())
             .andDo(document("field-get-example",
                 links(
-                    linkWithRel("self").description("Canonical link for this <<resources-field,field>>."),
-                    linkWithRel("field").description("This <<resources-field,field>>.")),
+                    linkWithRel("self").description("Canonical link for this <<resources-field,field>>.")),
                 responseFields(
-                    idField(),
-                    panelIdField(),
+                    panelField(),
                     nameField(),
                     subsectionWithPath("_links").description("<<resources-field-links,Links>> to other resources."))));
     }
 
     @Test
-    public void fieldUpdateExample() throws Exception {
-
+    public void fieldUpdateExample() throws Exception
+    {
         Map<String, String> field = createFieldData(
-            "ebcc68c0-7c0e-45fc-a0cd-b7c631f45dd4",
-            "ff1cc98a-1e03-48b3-8f21-f89be1918f16",
+            "example-panel",
             "Date of Birth"
         );
 
-        String fieldLocation = postField(field)
+        String fieldLocation = putField("example", field)
             .andReturn()
                 .getResponse()
                 .getHeader("Location");
@@ -192,27 +188,18 @@ public class ApiDocumentation
 
         Map<String, String> fieldUpdate = new HashMap<>();
         fieldUpdate.put("name", "New Name");
+        fieldUpdate.put("panel", "new-panel");
 
-        this.mockMvc.perform(
-            patch(fieldLocation)
-                .contentType(MediaTypes.HAL_JSON)
-                .content(objectMapper.writeValueAsString(fieldUpdate)))
-            .andExpect(status().isNoContent())
+        putField("example", fieldUpdate)
             .andDo(document("field-update-example",
                 requestFields(
-                    nameField().optional())));
+                    nameField(),
+                    panelField())));
     }
 
-    private FieldDescriptor idField()
+    private FieldDescriptor panelField()
     {
-        return fieldWithPath("id")
-            .description("The unique identifier of the field.")
-            .type(JsonFieldType.STRING);
-    }
-
-    private FieldDescriptor panelIdField()
-    {
-        return fieldWithPath("panelId")
+        return fieldWithPath("panel")
             .description("The unique identifier of the panel which owns the field.")
             .type(JsonFieldType.STRING);
     }
@@ -224,41 +211,38 @@ public class ApiDocumentation
             .type(JsonFieldType.STRING);
     }
 
-    private ResultActions postField(final Map<String, String> field) throws Exception
+    private ResultActions putField(String id, final Map<String, String> field) throws Exception
     {
         return mockMvc
             .perform(
-                post("/fields")
+                put("/fields/" + id)
                     .contentType(MediaTypes.HAL_JSON)
                     .content(objectMapper.writeValueAsString(field)))
             .andExpect(status().isCreated());
     }
 
-    private ResultActions verifyFieldResource(final String fieldLocation, final Map<String, String> field) throws Exception
+    private ResultActions verifyFieldResource(final @NonNull String fieldLocation, final @NonNull Map<String, String> field) throws Exception
     {
         return mockMvc
             .perform(get(fieldLocation))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("id", is(field.get("id"))))
-            .andExpect(jsonPath("panelId", is(field.get("panelId"))))
+            .andExpect(jsonPath("panel", is(field.get("panel"))))
             .andExpect(jsonPath("name", is(field.get("name"))))
-            .andExpect(jsonPath("_links.self.href", is(fieldLocation)))
-            .andExpect(jsonPath("_links.field.href", is(fieldLocation)));
+            .andExpect(jsonPath("_links.self.href", is(fieldLocation)));
     }
 
-    private Map<String, String> createFieldData(final String id, final String panelId, final String name)
+    private Map<String, String> createFieldData(final String panelId, final String name)
     {
         Map<String, String> field = new HashMap<>();
 
-        field.put("id", id);
-        field.put("panelId", panelId);
+        field.put("panel", panelId);
         field.put("name", name);
 
         return field;
     }
 
-    private void createField(String id, String panelId, String name)
+    private void createField(String id, String name)
     {
-        this.fieldRepository.save(new Field(id, panelId, name));
+        this.fieldRepository.save(Field.define(id, name, "demo"));
     }
 }

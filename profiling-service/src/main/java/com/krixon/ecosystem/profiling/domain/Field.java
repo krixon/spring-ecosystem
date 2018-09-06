@@ -1,8 +1,10 @@
 package com.krixon.ecosystem.profiling.domain;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Value;
 import org.springframework.data.domain.AbstractAggregateRoot;
+import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,34 +12,84 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
-public class Field extends AbstractAggregateRoot
+public class Field extends AbstractAggregateRoot implements Identifiable<String>
 {
     @Id
     private String id;
 
     @NotNull
-    private String panelId;
+    private String name;
 
     @NotNull
-    private String name;
+    private AnswerType answerType;
+
+    private String panelId;
+
 
     private Field() {}
 
-    public Field(String id, String panelId, String name)
+    private Field(@NonNull String id, @NonNull String name, @NonNull AnswerType answerType, String panelId)
     {
         this.id = id;
-        this.panelId = panelId;
         this.name = name;
+        this.answerType = answerType;
+        this.panelId = panelId;
     }
 
-    void markDefined()
+    public static Field define(String id, String name)
     {
-        registerEvent(new Defined(id, panelId, name));
+        return define(id, name, AnswerType.TEXTUAL);
+    }
+
+    public static Field define(String id, String name, String panelId)
+    {
+        return define(id, name, AnswerType.TEXTUAL, panelId);
+    }
+
+    public static Field define(String id, String name, AnswerType answerType)
+    {
+        return define(id, name, answerType, null);
+    }
+
+    public static Field define(String id, String name, AnswerType answerType, String panelId)
+    {
+        Field instance = new Field(id, name, answerType, panelId);
+
+        instance.registerEvent(new Defined(id, name, panelId));
+
+        return instance;
+    }
+
+    public void promoteToGlobal()
+    {
+        this.panelId = null;
+
+        // TODO: Event.
+    }
+
+    public void transferToPanel(@NonNull String panelId)
+    {
+        this.panelId = panelId;
+
+        // TODO: Event.
+    }
+
+    public void rename(@NonNull String name)
+    {
+        this.name = name;
+
+        // TODO: Event.
+    }
+
+    public enum AnswerType {
+        NUMERIC, TEXTUAL,
     }
 
     @Value
     private static class Defined
     {
-        private String id, panelId, name;
+        private @NonNull String id, name;
+        private String panelId;
+
     }
 }

@@ -174,24 +174,28 @@ operation::fields-list-example[snippets='response-fields,curl-request,http-respo
 
 
 
-[[resources-fields-create]]
+[[resources-field-create]]
 === Creating a Field
 
 A `POST` request is used to create a field.
 
+==== Request Structure
+
+include::{snippets}/field-create-example/request-fields.adoc[]
+
 ==== Example Request
 [role="primary"]
 .HTTP
-include::{snippets}/fields-create-example/http-request.adoc[]
+include::{snippets}/field-create-example/http-request.adoc[]
 [role="secondary"]
 .CURL
-include::{snippets}/fields-create-example/curl-request.adoc[]
+include::{snippets}/field-create-example/curl-request.adoc[]
 [role="secondary"]
 .HTTPie
-include::{snippets}/fields-create-example/httpie-request.adoc[]
+include::{snippets}/field-create-example/httpie-request.adoc[]
 
 ==== Example Response
-include::{snippets}/fields-create-example/http-response.adoc[]
+include::{snippets}/field-create-example/http-response.adoc[]
 
 
 
@@ -231,17 +235,11 @@ include::{snippets}/field-get-example/http-response.adoc[]
 [[resources-field-update]]
 === Update a field
 
-A `PATCH` request is used to update a field.
+A `PUT` request is used to update a field.
 
 ==== Request Structure
 
 include::{snippets}/field-update-example/request-fields.adoc[]
-
-// This only applies if/when there is more than one editable field:
-//To leave an attribute of a field unchanged, any of the above may be omitted from the request.
-
-[NOTE]
-It is not possible to update the `id` or `panelId` properties of a field.
 
 ==== Example Request
 [role="primary"]
