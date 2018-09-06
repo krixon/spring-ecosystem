@@ -135,10 +135,14 @@ public class ApiDocumentation
             "Date of Birth"
         );
 
+        FieldDescriptor panelField = panelField();
+
         String fieldLocation = putField("example", field)
             .andDo(document("field-create-example",
                 requestFields(
-                    panelField().optional(),
+                    panelField
+                        .description(panelField.getDescription() + "\n\nIf `panel` is null or omitted, a global field will be created.")
+                        .optional(),
                     nameField())))
             .andReturn()
                 .getResponse()

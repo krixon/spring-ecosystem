@@ -1,11 +1,16 @@
 |===
-|Path|Type|Description|Optional
+|Path|Type|Description|Required
 
 {{#fields}}
 |{{path}}
 |{{type}}
 |{{description}}
-|{{optional}}
+ifeval::[{{optional}} == false]
+|icon:check[]
+endif::[]
+ifeval::[{{optional}} == true]
+|icon:times[]
+endif::[]
 
 {{/fields}}
 |===

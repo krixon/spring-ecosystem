@@ -113,6 +113,9 @@
                         <configuration>
                             <backend>html</backend>
                             <doctype>book</doctype>
+                            <attributes>
+                                <source-highlighter>highlight.js</source-highlighter>
+                            </attributes>
                         </configuration>
                     </execution>
                 </executions>

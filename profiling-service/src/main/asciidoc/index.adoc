@@ -4,11 +4,10 @@ v0.1.0: First draft
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
+//:highlightjs-theme: hybrid
 :toc: left
 :toclevels: 4
 :sectlinks:
-:operation-curl-request-title: Example request
-:operation-http-response-title: Example response
 :app-title: Profiling Service
 ifndef::snippets[]
 :snippets: ../../../target/generated-snippets
